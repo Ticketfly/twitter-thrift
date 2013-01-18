@@ -7,18 +7,33 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>A clone of Twitter Commons Thrift library</name>
+    <name>Twitter Thrift Lib for Thrift 0.9.0</name>
+    <url>https://github.com/dragisak/twitter-thrift</url>
+    <description>
+        I took com.twitter.common and pulled out everything except their thrift library. Then, I ported it
+        to be compatible with Thrift 0.9.0
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <guava.version>13.0.1</guava.version>
+        <thrift.version>0.9.0</thrift.version>
+        <twitter.common.net-pool.version>0.0.43</twitter.common.net-pool.version>
+        <gson.version>2.2.2</gson.version>
+        <slf4j.version>1.7.2</slf4j.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.apache.thrift</groupId>
             <artifactId>libthrift</artifactId>
-            <version>0.9.0</version>
+            <version>${thrift.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -27,23 +42,23 @@
         </dependency>
         <dependency>
             <groupId>com.twitter.common</groupId>
-            <artifactId>base</artifactId>
-            <version>0.0.51</version>
-        </dependency>
-        <dependency>
-            <groupId>com.twitter.common</groupId>
             <artifactId>net-pool</artifactId>
-            <version>0.0.43</version>
+            <version>${twitter.common.net-pool.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.2.2</version>
+            <version>${gson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.2</version>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <!-- Testing Dependencies -->
