@@ -38,7 +38,6 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TCompactProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.server.THsHaServer;
-import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TFramedTransport;
@@ -62,7 +61,7 @@ import com.twitter.thrift.Status;
  *
  * @author William Farner
  */
-public abstract class ThriftServer {
+public class ThriftServer {
     private static final Logger LOG = Logger.getLogger(ThriftServer.class.getName());
 
     public static final Supplier<TProtocolFactory> BINARY_PROTOCOL =
