@@ -26,6 +26,7 @@ import com.twitter.common.net.pool.ResourceExhaustedException;
 import com.twitter.common.thrift.TResourceExhaustedException;
 import com.twitter.common.thrift.TTimeoutException;
 import com.twitter.common.net.loadbalancing.RequestTracker;
+import com.twitter.common.thrift.stats.ThriftStatsCollector;
 import org.apache.thrift.async.AsyncMethodCallback;
 import org.apache.thrift.transport.TTransport;
 
@@ -50,25 +51,27 @@ public class ThriftCaller<T> implements Caller {
     private final Function<TTransport, T> clientFactory;
     private final Amount<Long, Time> timeout;
     private final boolean debug;
+    private final ThriftStatsCollector statsCollector;
 
     /**
      * Creates a new thrift caller.
      *
      * @param connectionPool The connection pool to use.
-     * @param requestTracker The request tracker to nofify of request results.
+     * @param requestTracker The request tracker to notify of request results.
      * @param clientFactory  Factory to use for building client object instances.
      * @param timeout        The timeout to use when requesting objects from the connection pool.
      * @param debug          Whether to use the caller in debug mode.
      */
     public ThriftCaller(ObjectPool<Connection<TTransport, InetSocketAddress>> connectionPool,
                         RequestTracker<InetSocketAddress> requestTracker, Function<TTransport, T> clientFactory,
-                        Amount<Long, Time> timeout, boolean debug) {
+                        Amount<Long, Time> timeout, boolean debug, ThriftStatsCollector statsCollector) {
 
         this.connectionPool = connectionPool;
         this.requestTracker = requestTracker;
         this.clientFactory = clientFactory;
         this.timeout = timeout;
         this.debug = debug;
+        this.statsCollector = statsCollector;
     }
 
     @Override
@@ -77,6 +80,8 @@ public class ThriftCaller<T> implements Caller {
 
         final Connection<TTransport, InetSocketAddress> connection = getConnection(connectTimeoutOverride);
         final long startNanos = System.nanoTime();
+        final long startMs = System.currentTimeMillis();
+        final String methodName = method.getName();
 
         ResultCapture capture = new ResultCapture() {
             @Override
@@ -84,6 +89,7 @@ public class ThriftCaller<T> implements Caller {
                 try {
                     requestTracker.requestResult(connection.getEndpoint(),
                             RequestTracker.RequestResult.SUCCESS, System.nanoTime() - startNanos);
+                    statsCollector.add(methodName + "-success", System.currentTimeMillis() - startMs );
                 } finally {
                     connectionPool.release(connection);
                 }
@@ -98,6 +104,7 @@ public class ThriftCaller<T> implements Caller {
                 try {
                     requestTracker.requestResult(connection.getEndpoint(),
                             RequestTracker.RequestResult.FAILED, System.nanoTime() - startNanos);
+                    statsCollector.add(methodName + "-fail", System.currentTimeMillis() - startMs );
                 } finally {
                     connectionPool.remove(connection);
                 }

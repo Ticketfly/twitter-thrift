@@ -322,7 +322,7 @@ public class Thrift<T> {
     boolean debug = config.isDebug();
 
     Caller decorated = new ThriftCaller<T>(connectionPool, requestTracker, clientFactory,
-        config.getConnectTimeout(), debug);
+        config.getConnectTimeout(), debug, config.getStatsCollector());
 
     // [retry]
     if (config.getMaxRetries() > 0) {
