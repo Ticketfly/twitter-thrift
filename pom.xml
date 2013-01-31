@@ -198,13 +198,13 @@
 
     <distributionManagement>
         <repository>
-            <id>tfly-repo</id>
-            <name>tfly-repo-releases</name>
+            <id>libs-release-local</id>
+            <name>libs-release-local</name>
             <url>http://build.ticketfly.com/artifactory/libs-release-local</url>
         </repository>
         <snapshotRepository>
-            <id>tfly-repo</id>
-            <name>tfly-repo-snapshots</name>
+            <id>libs-snapshot-local</id>
+            <name>libs-snapshot-local</name>
             <url>http://build.ticketfly.com/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>

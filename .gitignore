@@ -29,7 +29,4 @@ ivy
 *.pyc
 *.hprof
 *.swp
-scalding/data/
-src/cpp/julpan0/build*
-src/cpp/julpan0/data
-src/cpp/julpan0/third_party_data/
+release.properties
