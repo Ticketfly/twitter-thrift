@@ -124,6 +124,7 @@ public class ThriftFactory<T> {
     private Closure<Connection<TTransport, InetSocketAddress>> postCreateCallback = Closures.noop();
     private StatsProvider statsProvider = Stats.STATS_PROVIDER;
     private ThriftStatsCollector statsCollector = ThriftStatsCollector.DUMMY;
+    private TProtocolFactory protocolFactory = null;
 
     private String serviceName;
     private boolean sslTransport;
@@ -321,7 +322,12 @@ public class ThriftFactory<T> {
      * @return The client factory to use.
      */
     private Function<TTransport, T> getClientFactory() {
-        return clientFactory == null ? createClientFactory(serviceInterface) : clientFactory;
+        return clientFactory == null ? createClientFactory(serviceInterface, getProtocolFactory()) : clientFactory;
+    }
+
+    private TProtocolFactory getProtocolFactory() {
+        // TODO: We can configure strictRead, strictWrite, length
+        return protocolFactory == null ? new TBinaryProtocol.Factory() : protocolFactory;
     }
 
     /**
@@ -390,6 +396,12 @@ public class ThriftFactory<T> {
     @VisibleForTesting
     public ThriftFactory<T> withClientFactory(Function<TTransport, T> clientFactory) {
         this.clientFactory = Preconditions.checkNotNull(clientFactory);
+
+        return this;
+    }
+
+    public ThriftFactory<T> withProtocolFactory(TProtocolFactory protocolFactory) {
+        this.protocolFactory = protocolFactory;
 
         return this;
     }
@@ -550,7 +562,7 @@ public class ThriftFactory<T> {
         return this;
     }
 
-    private static <T> Function<TTransport, T> createClientFactory(Class<T> serviceInterface) {
+    private static <T> Function<TTransport, T> createClientFactory(Class<T> serviceInterface, final TProtocolFactory protocolFactory) {
         final Constructor<? extends T> implementationConstructor =
                 findImplementationConstructor(serviceInterface);
 
@@ -558,7 +570,7 @@ public class ThriftFactory<T> {
             @Override
             public T apply(TTransport transport) {
                 try {
-                    return implementationConstructor.newInstance(new TBinaryProtocol(transport));
+                    return implementationConstructor.newInstance(protocolFactory.getProtocol(transport));
                 } catch (InstantiationException e) {
                     throw new RuntimeException(e);
                 } catch (IllegalAccessException e) {
@@ -592,8 +604,7 @@ public class ThriftFactory<T> {
                         "Invalid transport provided to client factory: " + transport.getClass());
 
                 try {
-                    T client = implementationConstructor.newInstance(new TBinaryProtocol.Factory(),
-                            clientManager, transport);
+                    T client = implementationConstructor.newInstance(getProtocolFactory(), clientManager, transport);
 
                     if (socketTimeout != null) {
                         ((TAsyncClient) client).setTimeout(socketTimeout.as(Time.MILLISECONDS));
