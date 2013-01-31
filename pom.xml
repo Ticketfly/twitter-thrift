@@ -185,4 +185,17 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <distributionManagement>
+        <repository>
+            <id>tfly-repo</id>
+            <name>tfly-repo-releases</name>
+            <url>http://build.ticketfly.com/artifactory/libs-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>tfly-repo</id>
+            <name>tfly-repo-snapshots</name>
+            <url>http://build.ticketfly.com/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
