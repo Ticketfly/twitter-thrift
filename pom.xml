@@ -3,7 +3,7 @@
 
     <groupId>com.ticketfly</groupId>
     <artifactId>thrift</artifactId>
-    <version>1.1</version>
+    <version>1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Twitter Thrift Lib for Thrift 0.9.0</name>
