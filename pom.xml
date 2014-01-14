@@ -3,7 +3,7 @@
 
     <groupId>com.ticketfly</groupId>
     <artifactId>thrift</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
     <name>Twitter Thrift Lib for Thrift 0.9.0</name>
@@ -16,7 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <guava.version>13.0.1</guava.version>
-        <thrift.version>0.9.0</thrift.version>
+        <thrift.version>0.9.1</thrift.version>
         <twitter.common.net-pool.version>0.0.43</twitter.common.net-pool.version>
         <gson.version>2.2.2</gson.version>
         <slf4j.version>1.7.2</slf4j.version>
