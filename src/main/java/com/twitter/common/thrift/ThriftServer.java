@@ -149,16 +149,16 @@ public class ThriftServer {
             THsHaServer.Args args = new THsHaServer.Args(socket);
 
             if (setup.getNumThreads() > 0) {
-                args = args.maxWorkerThreads(setup.getNumThreads());
+                args = args.workerThreads(setup.getNumThreads());
             }
 
             // default queue size to num threads:  max response time becomes double avg service time
             final BlockingQueue<Runnable> queue =
                     new ArrayBlockingQueue<Runnable>(setup.getQueueSize() > 0 ? setup.getQueueSize()
-                            : args.getMaxWorkerThreads());
+                            : args.getWorkerThreads());
 
-            final ThreadPoolExecutor invoker = new ThreadPoolExecutor(args.getMaxWorkerThreads(),
-                    args.getMaxWorkerThreads(), args.getStopTimeoutVal(), args.getStopTimeoutUnit(), queue);
+            final ThreadPoolExecutor invoker = new ThreadPoolExecutor(args.getWorkerThreads(),
+                    args.getWorkerThreads(), args.getStopTimeoutVal(), args.getStopTimeoutUnit(), queue);
 
             final String serverName = (setup.getName() != null ? setup.getName() : "no-name");
             Stats.export(new StatImpl<Integer>(serverName + "_thrift_server_active_threads") {

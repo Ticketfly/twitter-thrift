@@ -37,13 +37,13 @@ public class TMonitoredServerSocket extends TServerSocket {
   private ConnectionMonitor<InetSocketAddress> monitor;
 
   public TMonitoredServerSocket(ServerSocket serverSocket,
-      ConnectionMonitor<InetSocketAddress> monitor) throws TTransportException {
+      ConnectionMonitor<InetSocketAddress> monitor) {
     super(serverSocket);
     this.monitor = Preconditions.checkNotNull(monitor);
   }
 
   public TMonitoredServerSocket(ServerSocket serverSocket, int clientTimeout,
-      ConnectionMonitor<InetSocketAddress> monitor) throws TTransportException {
+      ConnectionMonitor<InetSocketAddress> monitor) {
     super(serverSocket, clientTimeout);
     this.monitor = Preconditions.checkNotNull(monitor);
   }
