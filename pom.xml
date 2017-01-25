@@ -3,20 +3,20 @@
 
     <groupId>com.ticketfly</groupId>
     <artifactId>thrift</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
-    <name>Twitter Thrift Lib for Thrift 0.9.0</name>
+    <name>Twitter Thrift Lib for Thrift 0.9.3</name>
     <url>https://github.com/dragisak/twitter-thrift</url>
     <description>
         I took com.twitter.common and pulled out everything except their thrift library. Then, I ported it
-        to be compatible with Thrift 0.9.0
+        to be compatible with Thrift 0.9.3
     </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <guava.version>13.0.1</guava.version>
-        <thrift.version>0.9.1</thrift.version>
+        <thrift.version>0.9.3</thrift.version>
         <twitter.common.net-pool.version>0.0.43</twitter.common.net-pool.version>
         <gson.version>2.2.2</gson.version>
         <slf4j.version>1.7.2</slf4j.version>
@@ -181,11 +181,6 @@
             <id>twitter</id>
             <name>Twitter Maven Repo</name>
             <url>http://maven.twttr.com/</url>
-        </repository>
-        <repository>
-            <id>truth-github</id>
-            <name>Truth Github Repository</name>
-            <url>https://raw.github.com/truth0/repo/master</url>
         </repository>
     </repositories>
 
